@@ -80,3 +80,9 @@ wayジオメトリフィールドを更新します。
 ~~~
 UPDATE public.probe_kaisen197_2016 SET way=st_transform(ST_SetSRID(ST_Point(longitude,latitude),4301),4326) ;
 ~~~
+
+### マップマッチングの実行
+my_mapmacher.py を実行します。
+~~~
+pytoh3 my_mapmacher.py
+~~~
