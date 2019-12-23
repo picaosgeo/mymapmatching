@@ -56,7 +56,8 @@ ID,pdate,latitude,longitude
 ~~~
 
 ### プローブ走行軌跡 CSVデータのpostgreSQLインポート
-psql -U postgres mapmatching でpostgresqlにログインし、インポートのためのテーブルを作成します。
+csvファイルのあるフォルダで、
+psql -U postgres mapmatching で postgresql に接続し、インポートのためのテーブルを作成します。
 ~~~
 CREATE TABLE public.probe_kaisen197_2016 (
 	csv_id bigserial,
@@ -70,5 +71,12 @@ CREATE TABLE public.probe_kaisen197_2016 (
 CREATE INDEX probe_kaisen197_2016_way_idx ON probe_0122 USING gist (way);
 ~~~
 
-csvをインポートします
-インポートします。
+csvをインポートします。
+~~~
+\copy probe_kaisen197_2016(id,pdate,latitude,longitude) from 'probe_kaisen197_2016.csv' csv header
+~~~
+
+wayジオメトリフィールドを更新します。
+~~~
+UPDATE public.probe_kaisen197_2016 SET way=st_transform(ST_SetSRID(ST_Point(longitude,latitude),4301),4326) ;
+~~~
